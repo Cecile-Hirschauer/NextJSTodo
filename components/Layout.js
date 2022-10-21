@@ -9,7 +9,7 @@ export default function Layout(props) {
     return (
         <div className='relative flex flex-col min-h-screen text-white bg-slate-900 '>
             <Header />
-            <main className="flex-1">
+            <main className="flex flex-col flex-1 p-4">
                 {children}
             </main>
             <Footer />
