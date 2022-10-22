@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
 
@@ -7,12 +8,22 @@ export default function Login() {
   const [error, setError] = useState('')
   const [isLogingIn, setIsLogingIn] = useState(true)
 
-  const submitHandler = () => {
+  const {login, signup, currentUser} = useAuth();
+  console.log(currentUser);
+  
+  const submitHandler = async () => {
     if (!email || !password) {
       setError('Please, enter your email and password.')
-    } else {
-      setError('')
     }
+    if (isLogingIn) {
+      try {
+        return await login(email, password);
+      } catch (error) {
+        setError('Incorrect email or password')
+      }
+      return;
+    }
+    await signup(email, password);
   }
 
   // log
@@ -26,8 +37,8 @@ export default function Login() {
   return (
     <div className='flex flex-col items-center justify-center flex-1 gap-2 text-xs sm:gap-4 sm:text-sm'>
       <h1 className='text-2xl font-extrabold uppercase select-none sm:text-4xl'>
-        {isLogingIn ? 'Login': 'Register'}
-        </h1>
+        {isLogingIn ? 'Login' : 'Register'}
+      </h1>
       {error && <div className='w-full max-w-[40ch] text-center border border-solid border-rose-400 text-rose-400 py-2'>{error}</div>}
       <input type="email"
         placeholder='Email Address'
