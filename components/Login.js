@@ -9,7 +9,6 @@ export default function Login() {
   const [isLogingIn, setIsLogingIn] = useState(true)
 
   const {login, signup, currentUser} = useAuth();
-  console.log(currentUser);
   
   const submitHandler = async () => {
     if (!email || !password) {
@@ -26,13 +25,13 @@ export default function Login() {
     await signup(email, password);
   }
 
-  // log
-  useEffect(() => {
-    console.log('email: ', email)
-    console.log('pwd: ', password)
-    console.log('error: ', error)
-    console.log('logged in ', isLogingIn)
-  }), [email, password, error, isLogingIn]
+  // // log
+  // useEffect(() => {
+  //   console.log('email: ', email)
+  //   console.log('pwd: ', password)
+  //   console.log('error: ', error)
+  //   console.log('logged in ', isLogingIn)
+  // }), [email, password, error, isLogingIn]
 
   return (
     <div className='flex flex-col items-center justify-center flex-1 gap-2 text-xs sm:gap-4 sm:text-sm'>
