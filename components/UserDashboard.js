@@ -2,9 +2,11 @@ import { async } from '@firebase/util';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import TodoCard from './TodoCard';
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../firebase';
 
 export default function UserDashboard() {
-  const userInfo = useAuth();
+  const {userInfo, currentUser} = useAuth();
   const [addTodo, setAddTodo] = useState(false)
   const [todo, setTodo] = useState('')
   const [todoList, setTodoList] = useState({})
@@ -21,6 +23,14 @@ export default function UserDashboard() {
     const newKey = Object.keys(todoList).length === 0 ? 1 : [Math.max(...Object.keys(todoList)) + 1];
     setTodoList({ ...todoList, [newKey]: todo })
     setTodo('')
+    const userRef = doc(db, 'users', currentUser.uid)
+    await setDoc(userRef, {
+      "todos": {
+        [newKey]: todo
+      }
+    },
+    { merge: true}
+    )
   }
 
   return (
